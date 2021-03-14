@@ -1,1 +1,1 @@
-# Backend for Fundacyni
+# Backend for project and IDE integrator
