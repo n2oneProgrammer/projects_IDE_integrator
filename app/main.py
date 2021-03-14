@@ -1,0 +1,16 @@
+from fastapi import FastAPI
+from starlette.responses import RedirectResponse
+
+from .database import Base, engine
+from .routers import project
+
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI(title="Fundacyjni API", description="", version="0.0.1")
+app.include_router(project.router)
+
+
+@app.get("/")
+async def root():
+    response = RedirectResponse(url="/docs")
+    return response
