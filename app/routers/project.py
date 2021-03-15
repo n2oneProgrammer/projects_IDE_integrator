@@ -17,7 +17,7 @@ async def get_projects(skip: int = 0, limit: int = 100, db: Session = Depends(ge
 
 
 @router.post("/projects", response_model=ProjectResponse)
-async def get_projects(
+async def create_project(
         project: ProjectCreate = Depends(ProjectCreate.as_form),
         image: UploadFile = File(default=None),
         db: Session = Depends(get_db)
@@ -39,7 +39,7 @@ async def get_projects(
 
 
 @router.patch("/projects/{project_id}", response_model=ProjectResponse)
-async def get_projects(
+async def edit_projects(
         project_id: int,
         data: ProjectEdit = Depends(ProjectEdit.as_form),
         image: UploadFile = File(default=None),
