@@ -3,10 +3,9 @@ from typing import Optional
 from fastapi import Query, Form
 from pydantic import BaseModel, Field
 
+from app.dependencies import color_regex
 from app.schemats.editor import EditorResponse
 from app.schemats.project_type import ProjectTypeResponse
-
-color_regex = "^[a-fA-F0-9]{6}$"
 
 
 class ProjectResponse(BaseModel):
