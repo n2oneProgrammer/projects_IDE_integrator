@@ -57,3 +57,31 @@ class ProjectCreate(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class ProjectEdit(BaseModel):
+    name: Optional[str] = Query(None, min_length=10, max_length=100)
+    description: Optional[str] = Query(None, max_length=500)
+    color: Optional[str] = Query(None, regex=color_regex)
+    type_id: Optional[int]
+    editor_id: Optional[int]
+
+    @classmethod
+    def as_form(
+            cls,
+            name: Optional[str] = Form(None, min_length=10, max_length=100),
+            description: Optional[str] = Form(None, max_length=500),
+            color: Optional[str] = Form(None, regex=color_regex),
+            type_id: Optional[int] = Form(None),
+            editor_id: Optional[int] = Form(None),
+    ):
+        return cls(
+            name=name,
+            description=description,
+            color=color,
+            type_id=type_id,
+            editor_id=editor_id
+        )
+
+    class Config:
+        orm_mode = True
