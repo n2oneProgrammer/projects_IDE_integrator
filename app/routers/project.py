@@ -1,11 +1,9 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.dependencies import get_db
-
 from app.schemats.project import ProjectResponse, ProjectCreate, ProjectEdit
 from ..cruds import project as project_crud, get_project_by_id, edit_project
 from ..file_service import ImageException, max_image_size_KB
