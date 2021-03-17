@@ -55,7 +55,7 @@ async def edit_projects(
         )
 
     if project is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="project not found")
 
     try:
         project_response = await edit_project(db, project, data, image)

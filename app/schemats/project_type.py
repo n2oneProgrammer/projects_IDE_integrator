@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import Form
 from pydantic import BaseModel
 
@@ -27,6 +29,28 @@ class ProjectTypeCreate(BaseModel):
             name: str = Form(..., min_length=1, max_length=100),
             color: str = Form(..., regex=color_regex),
             default_editor_id: int = Form(...)
+    ):
+        return cls(
+            name=name,
+            color=color,
+            default_editor_id=default_editor_id
+        )
+
+    class Config:
+        orm_mode = True
+
+
+class ProjectTypeEdit(BaseModel):
+    name: Optional[str]
+    color: Optional[str]
+    default_editor_id: Optional[int]
+
+    @classmethod
+    def as_form(
+            cls,
+            name: str = Form(None, min_length=1, max_length=100),
+            color: str = Form(None, regex=color_regex),
+            default_editor_id: int = Form(None)
     ):
         return cls(
             name=name,
