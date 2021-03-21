@@ -38,12 +38,14 @@ async def create_project(db: Session, project: ProjectCreate, image: UploadFile 
 
 
 async def edit_project(db: Session, project: ProjectResponse, data: ProjectEdit, image: UploadFile = None):
-    if project.editor.id is not None and get_editor_by_id(db, project.editor.id) is None:
-        raise Exception("Editor with id " + str(project.editor.id) + " not exist")
-
-    if project.type.id is not None and get_project_type_by_id(db, project.type.id) is None:
-        raise Exception("type with id " + str(project.type.id) + " not exist")
-
+    if data.editor_id is not None and get_editor_by_id(db, data.editor_id) is None:
+        raise Exception("Editor with id " + str(data.editor_id) + " not exist")
+    else:
+        project.editor = get_editor_by_id(db, data.editor_id)
+    if data.type_id is not None and get_project_type_by_id(db, data.type_id) is None:
+        raise Exception("type with id " + str(data.type_id) + " not exist")
+    else:
+        project.type = get_project_type_by_id(db, data.type_id)
     if image is not None:
         image_url = await reupload_image(project.image, image)
         project.image = image_url
@@ -59,4 +61,4 @@ async def edit_project(db: Session, project: ProjectResponse, data: ProjectEdit,
 
     db.commit()
     db.refresh(project)
-    return project
+    return project.get_correct()
