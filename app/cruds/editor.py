@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from .. import models
-from ..schemats.editor import EditorCreate
+from ..schemats.editor import EditorCreate, EditorResponse, EditorEdit
 
 
 def get_editors(db: Session, skip: int = 0, limit: int = 100):
@@ -23,3 +23,14 @@ async def create_editor(db: Session, editor: EditorCreate):
     db.refresh(db_editor)
     return db_editor
 
+
+async def edit_editor(db: Session, editor: EditorResponse, data: EditorEdit):
+    if data.name is not None:
+        editor.name = data.name
+
+    if data.src is not None:
+        editor.src = data.src
+
+    db.commit()
+    db.refresh(editor)
+    return editor

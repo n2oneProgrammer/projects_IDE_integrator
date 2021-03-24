@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.dependencies import get_db
-from ..cruds import editor as editor_crud
-from ..schemats.editor import EditorResponse, EditorCreate
+from ..cruds import editor as editor_crud, get_editor_by_id, edit_editor
+from ..schemats.editor import EditorResponse, EditorCreate, EditorEdit
 
 router = APIRouter(tags=["editor"])
 
@@ -28,3 +28,17 @@ async def create_editor(
             detail=str(a)
         )
     return project
+
+
+@router.patch("/editors/{editor_id}", response_model=EditorResponse)
+async def edit_projects(
+        editor_id: int,
+        data: EditorEdit = Depends(EditorEdit.as_form),
+        db: Session = Depends(get_db)
+):
+    editor = get_editor_by_id(db, editor_id)
+    if editor is None:
+        raise HTTPException(status_code=404, detail="project not found")
+
+    editor_response = await edit_editor(db, editor, data)
+    return editor_response
