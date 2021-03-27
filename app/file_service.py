@@ -45,3 +45,8 @@ async def reupload_image(oldFileSrc: str, image: UploadFile):
     if oldFileSrc != "":
         os.remove(oldFileSrc)
     return await upload_image(image)
+
+
+def remove_image(src: str):
+    if src != "":
+        os.remove(src)

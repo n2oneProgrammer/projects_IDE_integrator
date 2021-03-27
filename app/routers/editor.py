@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.dependencies import get_db
-from ..cruds import editor as editor_crud, get_editor_by_id, edit_editor
+from ..cruds import editor as editor_crud, get_editor_by_id, edit_editor, delete_editor_by_id
 from ..schemats.editor import EditorResponse, EditorCreate, EditorEdit
 
 router = APIRouter(tags=["editor"])
@@ -42,3 +42,16 @@ async def edit_projects(
 
     editor_response = await edit_editor(db, editor, data)
     return editor_response
+
+
+@router.delete("/editors/{editor_id}")
+async def delete_projects(
+        editor_id: int,
+        db: Session = Depends(get_db)
+):
+    editor = get_editor_by_id(db, editor_id)
+    if editor is None:
+        raise HTTPException(status_code=404, detail="project not found")
+    delete_editor_by_id(db, editor)
+
+    return HTTPException(status_code=200, detail="Editor deleted")

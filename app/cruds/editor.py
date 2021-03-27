@@ -34,3 +34,13 @@ async def edit_editor(db: Session, editor: EditorResponse, data: EditorEdit):
     db.commit()
     db.refresh(editor)
     return editor
+
+
+def delete_editor_by_id(db: Session, editor: EditorResponse):
+    projects = db.query(models.Project).filter(models.Project.editor_id == editor.id).all()
+    for project in projects:
+        project.editor_id = None
+    db.commit()
+
+    db.delete(editor)
+    db.commit()
