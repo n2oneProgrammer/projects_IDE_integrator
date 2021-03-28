@@ -72,7 +72,7 @@ async def delete_projects(
 ):
     project_type = get_project_type_by_id(db, project_type_id)
     if project_type is None:
-        raise HTTPException(status_code=404, detail="project type not found")
+        raise HTTPException(status_code=404, detail="Project type not found")
     delete_project_type_by_id(db, project_type)
 
     return HTTPException(status_code=200, detail="Project type deleted")

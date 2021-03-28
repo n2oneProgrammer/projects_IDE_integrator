@@ -73,9 +73,9 @@ async def delete_projects(
         project_id: int,
         db: Session = Depends(get_db)
 ):
-    editor = get_project_by_id(db, project_id)
-    if editor is None:
-        raise HTTPException(status_code=404, detail="project not found")
-    delete_project_by_id(db, editor)
+    project = get_project_by_id(db, project_id)
+    if project is None:
+        raise HTTPException(status_code=404, detail="Project not found")
+    delete_project_by_id(db, project)
 
     return HTTPException(status_code=200, detail="Project deleted")
