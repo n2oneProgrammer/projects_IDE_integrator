@@ -45,13 +45,13 @@ async def edit_projects(
 
 
 @router.delete("/editors/{editor_id}")
-async def delete_projects(
+async def delete_editor(
         editor_id: int,
         db: Session = Depends(get_db)
 ):
     editor = get_editor_by_id(db, editor_id)
     if editor is None:
-        raise HTTPException(status_code=404, detail="project not found")
+        raise HTTPException(status_code=404, detail="Editor not found")
     delete_editor_by_id(db, editor)
 
     return HTTPException(status_code=200, detail="Editor deleted")

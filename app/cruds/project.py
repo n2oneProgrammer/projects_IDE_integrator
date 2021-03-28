@@ -62,3 +62,8 @@ async def edit_project(db: Session, project: ProjectResponse, data: ProjectEdit,
     db.commit()
     db.refresh(project)
     return project.get_correct()
+
+
+def delete_project_by_id(db: Session, project: ProjectResponse):
+    db.delete(project)
+    db.commit()
