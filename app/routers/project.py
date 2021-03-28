@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.dependencies import get_db
 from app.schemats.project import ProjectResponse, ProjectCreate, ProjectEdit
-from ..cruds import project as project_crud, get_project_by_id, edit_project
+from ..cruds import project as project_crud, get_project_by_id, edit_project, delete_project_by_id
 from ..file_service import ImageException, max_image_size_KB
 
 router = APIRouter(tags=["project"])
@@ -66,3 +66,16 @@ async def edit_projects(
                    "can be up to " + str(max_image_size_KB) + " KB",
         )
     return project_response
+
+
+@router.delete("/projects/{project_id}")
+async def delete_projects(
+        project_id: int,
+        db: Session = Depends(get_db)
+):
+    project = get_project_by_id(db, project_id)
+    if project is None:
+        raise HTTPException(status_code=404, detail="Project not found")
+    delete_project_by_id(db, project)
+
+    return HTTPException(status_code=200, detail="Project deleted")

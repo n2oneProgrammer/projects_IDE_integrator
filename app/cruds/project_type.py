@@ -51,3 +51,8 @@ async def edit_project_type(db: Session, project: ProjectTypeResponse, data: Pro
     db.commit()
     db.refresh(project)
     return project
+
+
+def delete_project_type_by_id(db: Session, project_type: ProjectTypeResponse):
+    db.delete(project_type)
+    db.commit()
